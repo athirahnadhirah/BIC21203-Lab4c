@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books JSON Display</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Book Collection</h1>
+    <div id="output"></div>
+
+    <script>
+        $(document).ready(function () {
+            $.getJSON("books.json", function (data) {
+                const books = data.books;
+
+                const firstTitle = books[0].title;
+                console.log("(a) Title of first book:", firstTitle);
+
+                const secondAuthor = books[1].author;
+                console.log("(b) Author of second book:", secondAuthor);
+
+                console.log("(c) Genres of all books:");
+                books.forEach(function (book, i) {
+                    console.log("  Book " + (i + 1) + ": " + book.genres.join(", "));
+                });
+
+                let html = "<ul>";
+                books.forEach(function (book) {
+                    html += "<li><strong>" + book.title + "</strong> by " +
+                            book.author + " (" + book.publicationYear + ") — " +
+                            book.genres.join(", ") + "</li>";
+                });
+                html += "</ul>";
+                $("#output").html(html);
+            }).fail(function () {
+                console.error("Could not load books.json. Is the server running?");
+            });
+        });
+    </script>
+</body>
+</html>
